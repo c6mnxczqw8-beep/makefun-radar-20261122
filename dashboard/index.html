@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">◉</div>
+    <div>
+      <h1>Token Launch Radar</h1>
+      <p class="tagline">Every protocol that records no token yet, ranked by what its launch would be worth — and how to farm it first.</p>
+    </div>
+  </div>
+  <div class="snapshot-note" id="snapshot-note">Snapshot loading…</div>
+</header>
+
+<section class="model panel" id="model-panel">
+  <h2>How the radar values a launch</h2>
+  <p>
+    An implied value is the market cap a protocol's token would carry if its record stayed as it is.
+    The radar derives it from the snapshot's own figures, never from a list of names:
+  </p>
+  <p class="formula">implied value = TVL × peer multiple × momentum × track record × product factor</p>
+  <ul class="model-points">
+    <li><strong>Peer multiple.</strong> For each family of protocols, the median market-cap-to-TVL ratio of the ones whose token already trades (the launched set below). A lending market is priced against launched lending markets, not against the whole field.</li>
+    <li><strong>Momentum.</strong> The protocol's seven-day TVL change, clamped: +80% or more earns ×1.32, −40% or worse earns ×0.84, no report earns ×1.00.</li>
+    <li><strong>Track record.</strong> How long it has run with no token: ×0.80 on day one, rising to ×1.20 at three years. An unreported start date earns ×0.90.</li>
+    <li><strong>Product factor.</strong> A wrapped, staked or bridged product of an asset that already trades — or an exchange — has no launch of its own to price: its figure is a claim on the underlying asset, discounted to ×0.03 and flagged <span class="badge badge-wrapped">wrapped</span> on the board. Native protocols keep ×1.00.</li>
+  </ul>
+  <p class="model-foot" id="model-foot"></p>
+</section>
+
+<main id="board-view">
+  <section class="controls panel">
+    <label>Search <input id="f-search" type="text" placeholder="name or slug"></label>
+    <label>Category <select id="f-category"><option value="">All categories</option></select></label>
+    <label>Chain <select id="f-chain"><option value="">All chains</option></select></label>
+    <label>Kind
+      <select id="f-kind">
+        <option value="">Native + wrapped</option>
+        <option value="native">Native protocols</option>
+        <option value="wrapped">Wrapped / exchange products</option>
+      </select>
+    </label>
+    <label class="check"><input id="f-watch" type="checkbox"> Watchlist only</label>
+    <span class="showing" id="showing"></span>
+  </section>
+
+  <section class="panel table-wrap">
+    <table id="board">
+      <thead>
+        <tr>
+          <th data-sort="rank">#</th>
+          <th data-sort="name">Protocol</th>
+          <th data-sort="category">Category</th>
+          <th>Chains</th>
+          <th data-sort="tvl_usd" class="num">TVL</th>
+          <th data-sort="change_7d" class="num">7d %</th>
+          <th data-sort="implied_value_usd" class="num">Implied value</th>
+          <th data-sort="klass">Kind</th>
+        </tr>
+      </thead>
+      <tbody id="board-body"></tbody>
+    </table>
+  </section>
+
+  <section class="panel launched">
+    <h2>Already launched — the peer set (not ranked)</h2>
+    <p class="launched-note">
+      These protocols' tokens already trade. They are not on the board and carry no implied value;
+      their market-cap-to-TVL ratios are the peer multiples the board above is priced from.
+    </p>
+    <div class="table-wrap">
+      <table id="launched">
+        <thead>
+          <tr><th>Protocol</th><th>Symbol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">MCap / TVL</th></tr>
+        </thead>
+        <tbody id="launched-body"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<main id="detail-view" hidden>
+  <p><a class="back" href="#/">← Back to the board</a></p>
+  <section class="panel" id="detail"></section>
+</main>
+
+<footer>
+  <p>Implied values are this radar's own model output from one sealed snapshot of public protocol data. A protocol "records no token" in that snapshot; that is a statement about the record, not a promise that a token does not exist or will ever be issued. Farm plans are starting points, not financial advice.</p>
+</footer>
+
+<script src="rows.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
